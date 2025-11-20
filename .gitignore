@@ -416,3 +416,22 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# LaTeX build artifacts
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
+*.synctex.gz
+*.log
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+
+# Generated PDFs directory
+pdfs/
