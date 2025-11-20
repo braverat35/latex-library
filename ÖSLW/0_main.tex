@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{csquotes}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{enumitem} 
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\section}{\LARGE\bfseries}{\thesection}{2em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1.5em}{}
+\titleformat{\subsubsection}{\large\itshape}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\title{Der Österreichische Skilehrweg (ÖSLW)}
+\author{Bauchinger Daniel}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+% ===========================================================
+\include{1_grün}
+\include{2_blau}
+\include{3_rot}
+\include{4_schwarz}
+
+\end{document}
