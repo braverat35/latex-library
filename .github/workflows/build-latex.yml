@@ -1,0 +1,76 @@
+name: Build LaTeX Documents
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup TeX Live
+        uses: teatimeguest/setup-texlive-action@v3
+        with:
+          packages: |
+            scheme-basic
+            latexmk
+            babel-german
+            lm
+            csquotes
+            geometry
+            setspace
+            titlesec
+            hyperref
+            enumitem
+      
+      - name: Create pdfs directory
+        run: mkdir -p pdfs
+      
+      - name: Find and build LaTeX documents
+        run: |
+          # Find all .tex files that contain \documentclass
+          echo "Searching for top-level LaTeX documents..."
+          
+          # Find all .tex files and check for \documentclass
+          for texfile in $(find . -name "*.tex" -type f); do
+            if grep -q '\\documentclass' "$texfile"; then
+              echo "Found document: $texfile"
+              
+              # Get the directory of the tex file
+              texdir=$(dirname "$texfile")
+              texbase=$(basename "$texfile" .tex)
+              
+              # Build the document in its directory
+              echo "Building $texfile..."
+              cd "$texdir"
+              latexmk -pdf -interaction=nonstopmode "$texbase.tex" || true
+              
+              # Move the PDF to the pdfs directory if it was created
+              if [ -f "$texbase.pdf" ]; then
+                echo "Moving $texbase.pdf to pdfs/"
+                mv "$texbase.pdf" "$GITHUB_WORKSPACE/pdfs/"
+              else
+                echo "Warning: PDF not generated for $texfile"
+              fi
+              
+              # Return to workspace root
+              cd "$GITHUB_WORKSPACE"
+            fi
+          done
+          
+          # List generated PDFs
+          echo "Generated PDFs:"
+          ls -la pdfs/
+      
+      - name: Upload PDFs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-pdfs
+          path: pdfs/
+          retention-days: 7
